@@ -63,4 +63,34 @@ mongoose.connection.on("error", error => {
   throw error;
 });
 
+app.use(
+  express.static(path.join(__dirname, "./public"), {
+    maxAge: 31557600000,
+    setHeaders: function(res) {
+      res.set({
+        "Cache-control": "no-store, no-cache",
+        Pragma: "no-cache",
+        Expires: "0"
+      });
+    }
+  })
+);
+
+app.use(
+  express.static(path.join(__dirname, "./public/admin"), {
+    maxAge: 31557600000,
+    setHeaders: function(res) {
+      res.set({
+        "Cache-control": "no-store, no-cache",
+        Pragma: "no-cache",
+        Expires: "0"
+      });
+    }
+  })
+);
+
+app.use((req, res) => {
+  res.sendFile(path.join(__dirname, "./public/index.html"));
+});
+
 module.exports = app;
